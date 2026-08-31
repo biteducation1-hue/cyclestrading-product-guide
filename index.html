@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>מדריך המוצרים — סייקלס טריידינג</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&family=Heebo:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── Design Tokens ─────────────────────────────────────── */
+:root {
+  --brand-blue:         #27AAE1;
+  --brand-green:        #39B54A;
+  --brand-green-bright: #7ED957;
+  --brand-green-pale:   #C9ED8A;
+  --brand-forest:       #1E332F;
+  --brand-ink:          #20272E;
+
+  --green-100: #E4F6CC;
+  --green-200: #C9ED8A;
+  --green-400: #7ED957;
+  --green-600: #39B54A;
+  --green-700: #2E8F3B;
+  --green-800: #246E2F;
+
+  --blue-100: #CDEBFA;
+  --blue-500: #27AAE1;
+  --blue-600: #1E8FBF;
+  --blue-700: #1A7299;
+  --blue-800: #185C7A;
+
+  --forest-800: #1E332F;
+  --forest-700: #28453E;
+  --forest-600: #355A50;
+
+  --ink-900: #20272E;
+  --ink-800: #2C353E;
+  --ink-700: #3A4550;
+  --ink-600: #4E5C68;
+  --ink-400: #7A8A96;
+  --ink-200: #C8D0D8;
+  --ink-100: #E8ECF0;
+  --ink-50:  #F4F6F8;
+
+  --surface-page:    #141A20;
+  --surface-card:    #1C2530;
+  --surface-raised:  #232E3A;
+  --surface-overlay: #2A3745;
+
+  --text-primary:   #EFF2F5;
+  --text-secondary: #9AABB8;
+  --text-muted:     #6A7D8C;
+
+  --border:         rgba(255,255,255,0.09);
+  --border-strong:  rgba(255,255,255,0.15);
+
+  --accent-blue:       var(--brand-blue);
+  --accent-green:      var(--brand-green-bright);
+
+  --font-display: 'Heebo', 'Assistant', system-ui, sans-serif;
+  --font-body:    'Assistant', 'Heebo', system-ui, sans-serif;
+  --font-mono:    'IBM Plex Mono', ui-monospace, monospace;
+
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+  --radius-pill: 999px;
+
+  --shadow-card: 0 4px 16px rgba(0,0,0,0.22), 0 1px 4px rgba(0,0,0,0.12);
+  --shadow-card-hover: 0 12px 32px rgba(0,0,0,0.32), 0 4px 8px rgba(0,0,0,0.16);
+
+  --glow-green: 0 8px 24px rgba(126,217,87,0.32);
+  --glow-blue:  0 8px 24px rgba(39,170,225,0.28);
+}
+
+/* ── Reset ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background: var(--surface-page);
+  direction: rtl;
+  text-align: right;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+h1,h2,h3,h4 { font-family: var(--font-display); font-weight: 700; line-height: 1.2; }
+a { color: var(--accent-blue); text-decoration: none; }
+::selection { background: var(--green-200); color: var(--ink-900); }
+
+/* ── Layout ─────────────────────────────────────────────── */
+.page-wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+/* ── Header ─────────────────────────────────────────────── */
+.site-header {
+  background: linear-gradient(160deg, var(--forest-800) 0%, var(--ink-900) 60%);
+  border-bottom: 1px solid var(--border);
+  padding: 40px 0 48px;
+  position: relative;
+  overflow: hidden;
+}
+.site-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 120%, rgba(57,181,74,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.header-inner { position: relative; z-index: 1; }
+.wordmark {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 28px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.wordmark-cycles { color: var(--brand-blue); }
+.wordmark-trading { color: var(--brand-green); }
+.site-header h1 {
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+.site-header .subtitle {
+  font-size: 17px;
+  color: var(--text-secondary);
+  max-width: 560px;
+}
+
+/* ── Search bar ─────────────────────────────────────────── */
+.search-wrap {
+  padding: 28px 0 4px;
+}
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface-card);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: 0 18px;
+  max-width: 480px;
+}
+.search-icon { color: var(--text-muted); flex-shrink: 0; }
+.search-box input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 15px;
+  padding: 13px 0;
+  direction: rtl;
+}
+.search-box input::placeholder { color: var(--text-muted); }
+.search-count {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* ── Main content ───────────────────────────────────────── */
+.main { padding: 32px 0 64px; }
+
+/* ── Group section ──────────────────────────────────────── */
+.group-section { margin-bottom: 48px; }
+.group-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.group-kicker {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.kicker-blue { color: var(--brand-blue); }
+.kicker-green { color: var(--brand-green-bright); }
+.group-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+.group-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ── Product cards grid ─────────────────────────────────── */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+/* ── Product card ───────────────────────────────────────── */
+.product-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: box-shadow 200ms ease, border-color 200ms ease, transform 200ms ease;
+  cursor: default;
+}
+.product-card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+}
+.product-card.accent-green {
+  border-top: 2px solid var(--brand-green-bright);
+}
+.product-card.accent-green:hover {
+  border-color: var(--brand-green-bright);
+  box-shadow: var(--shadow-card-hover), var(--glow-green);
+}
+.product-card.accent-blue {
+  border-top: 2px solid var(--brand-blue);
+}
+.product-card.accent-blue:hover {
+  border-color: var(--brand-blue);
+  box-shadow: var(--shadow-card-hover), var(--glow-blue);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+.card-name {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+.card-note {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.price-block { text-align: left; flex-shrink: 0; }
+.price-main {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  direction: ltr;
+}
+.price-note {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 3px;
+  white-space: pre-line;
+  line-height: 1.5;
+  direction: rtl;
+  text-align: right;
+}
+
+.attrs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.attr-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-items: flex-start;
+}
+.attr-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  line-height: 1.5;
+  flex-shrink: 0;
+}
+.pill-green { background: var(--green-100); color: var(--green-800); }
+.pill-blue  { background: var(--blue-100);  color: var(--blue-800);  }
+.pill-neutral { background: var(--ink-100); color: var(--ink-700); }
+
+.attr-value {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  padding-top: 2px;
+}
+.attr-value strong {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+/* ── Empty state ────────────────────────────────────────── */
+.empty-state {
+  padding: 60px 24px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 16px;
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="page-wrap header-inner">
+    <div class="wordmark">
+      <span class="wordmark-cycles">CYCLES</span>
+      <span class="wordmark-trading">TRADING</span>
+    </div>
+    <h1>מדריך המוצרים</h1>
+    <p class="subtitle">סקירה מלאה של כל המסלולים, הקורסים ומוצרי ההמשך של סייקלס טריידינג</p>
+  </div>
+</header>
+
+<div class="page-wrap">
+  <div class="search-wrap">
+    <div class="search-box">
+      <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="text" id="searchInput" placeholder="חיפוש מוצר..." autocomplete="off">
+      <span class="search-count" id="searchCount"></span>
+    </div>
+  </div>
+
+  <main class="main" id="mainContent"></main>
+</div>
+
+<footer class="site-footer">
+  <div class="page-wrap">
+    סייקלס טריידינג · cyclestrading.com · כל המחירים כוללים מע"מ
+  </div>
+</footer>
+
+<script>
+const RAW = [
+  { id: 'subs', kicker: 'CYCLE REPORT', title: 'מנויי דוחות ולייבים', accent: 'blue',
+    subtitle: 'נקודת הכניסה של הלקוח — גישה לדוח החודשי, לחדרי הדיסקורד וללייבים השבועיים.',
+    products: [
+      { name: 'מנוי חודשי', price: '₪450', accent: 'blue', attrs: [
+        { label: 'דוחות', value: 'חודש אחד', tone: 'blue' },
+        { label: 'דיסקורד', value: 'גישה לחדרי הדוח לחודש אחד', tone: 'blue' },
+        { label: 'לייבים', value: '5 לייבים בשבוע — לחודש אחד (ללא התחייבות — ההתחייבות היא לשניים של רועי וזיו)', tone: 'blue' },
+        { label: 'מוצר המשך', value: 'מנוי רבעוני', tone: 'neutral' },
+      ]},
+      { name: 'מנוי רבעוני', price: '₪1,190', accent: 'blue', attrs: [
+        { label: 'דוחות', value: '3 חודשים', tone: 'blue' },
+        { label: 'דיסקורד', value: 'גישה לחדרי הדוח — 3 חודשים', tone: 'blue' },
+        { label: 'לייבים', value: '5 לייבים בשבוע — ל-3 חודשים (ללא התחייבות — ההתחייבות היא לשניים של רועי וזיו)', tone: 'blue' },
+        { label: 'מוצר המשך', value: 'מנוי שנתי', tone: 'neutral' },
+      ]},
+      { name: 'מנוי שנתי', price: '₪3,590', accent: 'blue', attrs: [
+        { label: 'דוחות', value: '12 חודשים', tone: 'blue' },
+        { label: 'דיסקורד', value: 'גישה לחדרי הדוח — 12 חודשים', tone: 'blue' },
+        { label: 'לייבים', value: '5 לייבים בשבוע — ל-12 חודשים (ללא התחייבות — ההתחייבות היא לשניים של רועי וזיו)', tone: 'blue' },
+      ]},
+    ]},
+  { id: 'flagship', kicker: 'FOCUS TRADER', title: 'מוצר הדגל', accent: 'green',
+    subtitle: 'הקורס המרכזי של סייקלס — פתוח לכל החיים, כולל ליווי, דוחות ולייבים בשנה הראשונה.',
+    products: [
+      { name: 'פוקוס טריידר', note: 'מחיר מלא ₪12,890 · מחיר ערב וובינר ₪8,790 · מחיר לאחר וובינר ₪9,690', price: '₪12,890', priceNote: 'ערב וובינר ₪8,790\nלאחר וובינר ₪9,690', accent: 'green', attrs: [
+        { label: 'קורס', value: 'פוקוס טריידר — פתוח לכל החיים', tone: 'green' },
+        { label: 'פגישות זום', value: '3 חודשי ליווי הכוללים 3 פגישות זום + תמיכה בוואטסאפ', tone: 'green' },
+        { label: 'דוחות', value: '12–13 חודשים (מי שרכש בערב הוובינר מקבל 13 חודשים)', tone: 'blue' },
+        { label: 'דיסקורד', value: 'גישה לחדרי הדוח ל-12/13 חודשים', tone: 'blue' },
+        { label: 'לייבים', value: '7 לייבים בשבוע ל-12/13 חודשים', tone: 'blue' },
+        { label: 'מוצר המשך', value: 'חידוש למנוי שנתי בסיום השנה · שדרוגים: קורס גאן מאסטר קוד, ליווי יד ביד, ליווי נוסטרו', tone: 'neutral' },
+      ]},
+    ]},
+  { id: 'mentoring', kicker: 'HANDS-ON', title: 'מסלולי ליווי אישי מתקדם', accent: 'green',
+    subtitle: 'ליווי צמוד לאורך זמן — פגישות זום אישיות, גישה ארוכה לדוחות וללייבים.',
+    products: [
+      { name: 'ליווי יד ביד', price: '50–55K', priceNote: 'לקוח חדש 55K\nלקוח שרכש פוקוס 50K', accent: 'green', attrs: [
+        { label: 'קורס', value: 'אם לא רכש קורס גאן — מקבל אותו כחלק מהחבילה. לקוח חדש מקבל את שני הקורסים', tone: 'green' },
+        { label: 'פגישות זום', value: '24 פגישות זום + ליווי בוואטסאפ ל-9 חודשים', tone: 'green' },
+        { label: 'דיסקורד', value: 'גישה לחדרי הדוח ל-24 חודשים', tone: 'blue' },
+        { label: 'לייבים', value: '7 לייבים בשבוע ל-24 חודשים', tone: 'blue' },
+        { label: 'מוצר המשך', value: 'מנוי שנתי', tone: 'neutral' },
+      ]},
+      { name: 'ליווי יד ביד מופחת', note: 'לא כולל קורס גאן מאסטר קוד.', price: '25K', priceNote: 'לקוח שרכש קורס פוקוס', accent: 'green', attrs: [
+        { label: 'פגישות זום', value: '12 פגישות זום + ליווי בוואטסאפ ל-4 חודשים', tone: 'green' },
+        { label: 'דיסקורד', value: 'גישה לחדרי הדוח ל-24 חודשים', tone: 'blue' },
+        { label: 'לייבים', value: '7 לייבים בשבוע ל-24 חודשים', tone: 'blue' },
+        { label: 'מוצר המשך', value: 'מנוי שנתי', tone: 'neutral' },
+      ]},
+    ]},
+  { id: 'gann', kicker: 'GANN MASTER CODE', title: 'קורס משלים', accent: 'green',
+    subtitle: 'קורס מתקדם שיצר אחד המנטורים שלנו — נמכר רק ללקוחות שכבר רכשו את פוקוס טריידר.',
+    products: [
+      { name: 'קורס גאן מאסטר קוד', note: 'נמכר רק למי שרכש את פוקוס טריידר.', price: '~₪9,790', accent: 'green', attrs: [
+        { label: 'קורס', value: 'גאן מאסטר קוד — פתוח לכל החיים', tone: 'green' },
+        { label: 'דיסקורד', value: 'גישה בנוסף לחדרים ייעודיים לקורס', tone: 'blue' },
+        { label: 'לייבים', value: 'לייבים כמו תלמידי פוקוס + לייב ייעודי + לייב חדר מסחר — <strong>מותנה במנוי פעיל</strong>', tone: 'blue', html: true },
+        { label: 'מוצר המשך', value: 'מנוי שנתי', tone: 'neutral' },
+      ]},
+    ]},
+  { id: 'mentors', kicker: 'COACHES', title: 'מוצרי המשך של המאמנים', accent: 'green',
+    subtitle: 'ליווי אישי קצר-טווח ומסלולים משולבים — פגישות זום אישיות ותמיכה בוואטסאפ.',
+    products: [
+      { name: 'פגישה אישית', price: '₪1,100', accent: 'green', attrs: [
+        { label: 'פגישות זום', value: 'פגישה אישית אחת', tone: 'green' },
+      ]},
+      { name: 'ליווי אישי בוואטסאפ', price: '₪600', priceNote: 'לחודש', accent: 'green', attrs: [
+        { label: 'ליווי', value: 'ליווי אישי בוואטסאפ בלבד — לחודש', tone: 'green' },
+      ]},
+      { name: 'המסלול המלא', note: 'המשתלם ביותר.', price: '₪2,900', accent: 'green', attrs: [
+        { label: 'פגישות זום', value: '3 פגישות אישיות בזום + חודשיים ליווי בוואטסאפ', tone: 'green' },
+      ]},
+      { name: 'המסלול הממוקד', price: '₪2,700', accent: 'green', attrs: [
+        { label: 'פגישות זום', value: '2 פגישות אישיות בזום + חודשיים ליווי בוואטסאפ', tone: 'green' },
+      ]},
+      { name: 'ליווי נוסטרו', price: '₪3,500', accent: 'green', attrs: [
+        { label: 'פגישות זום', value: '3 פגישות אישיות בזום + 3 חודשי ליווי בוואטסאפ', tone: 'green' },
+      ]},
+    ]},
+];
+
+function pillClass(tone) {
+  return 'attr-pill ' + (tone === 'green' ? 'pill-green' : tone === 'blue' ? 'pill-blue' : 'pill-neutral');
+}
+
+function renderCard(p) {
+  const attrsHtml = p.attrs.map(a => `
+    <div class="attr-row">
+      <span class="${pillClass(a.tone)}">${a.label}</span>
+      <span class="attr-value">${a.html ? a.value : escHtml(a.value)}</span>
+    </div>
+  `).join('');
+
+  const priceNoteHtml = p.priceNote
+    ? `<div class="price-note">${escHtml(p.priceNote)}</div>`
+    : '';
+
+  const noteHtml = p.note
+    ? `<div class="card-note">${escHtml(p.note)}</div>`
+    : '';
+
+  return `
+    <div class="product-card accent-${p.accent}" data-search="${escAttr(searchText(p))}">
+      <div class="card-header">
+        <div>
+          <div class="card-name">${escHtml(p.name)}</div>
+          ${noteHtml}
+        </div>
+        <div class="price-block">
+          <div class="price-main">${escHtml(p.price)}</div>
+          ${priceNoteHtml}
+        </div>
+      </div>
+      <div class="attrs-list">${attrsHtml}</div>
+    </div>
+  `;
+}
+
+function renderGroup(g) {
+  const kickerClass = g.accent === 'blue' ? 'kicker-blue' : 'kicker-green';
+  const cardsHtml = g.products.map(renderCard).join('');
+  return `
+    <section class="group-section" id="${g.id}">
+      <div class="group-header">
+        <span class="group-kicker ${kickerClass}">${escHtml(g.kicker)}</span>
+        <h2 class="group-title">${escHtml(g.title)}</h2>
+        <p class="group-subtitle">${escHtml(g.subtitle)}</p>
+      </div>
+      <div class="cards-grid">${cardsHtml}</div>
+    </section>
+  `;
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function escAttr(s) {
+  return String(s).replace(/"/g,'&quot;');
+}
+function searchText(p) {
+  return [p.name, p.note||'', p.priceNote||'', ...p.attrs.map(a => a.label + ' ' + a.value)].join(' ').toLowerCase();
+}
+
+// Initial render
+const main = document.getElementById('mainContent');
+main.innerHTML = RAW.map(renderGroup).join('');
+
+// Search
+const input = document.getElementById('searchInput');
+const countEl = document.getElementById('searchCount');
+const total = RAW.reduce((n, g) => n + g.products.length, 0);
+
+function updateCount(shown) {
+  countEl.textContent = shown === total ? `${total} מוצרים` : `${shown} מתוך ${total}`;
+}
+updateCount(total);
+
+input.addEventListener('input', () => {
+  const q = input.value.trim().toLowerCase();
+  let shown = 0;
+
+  document.querySelectorAll('.group-section').forEach(sec => {
+    const cards = sec.querySelectorAll('.product-card');
+    let visibleInGroup = 0;
+    cards.forEach(card => {
+      const match = !q || card.dataset.search.includes(q);
+      card.style.display = match ? '' : 'none';
+      if (match) { shown++; visibleInGroup++; }
+    });
+    sec.style.display = visibleInGroup > 0 ? '' : 'none';
+  });
+
+  updateCount(shown);
+
+  if (shown === 0 && q) {
+    if (!document.getElementById('emptyState')) {
+      const em = document.createElement('div');
+      em.id = 'emptyState';
+      em.className = 'empty-state';
+      em.textContent = 'לא נמצאו מוצרים התואמים את החיפוש';
+      main.appendChild(em);
+    }
+  } else {
+    const em = document.getElementById('emptyState');
+    if (em) em.remove();
+  }
+});
+</script>
+</body>
+</html>
